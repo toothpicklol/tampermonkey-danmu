@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         彈幕裝填機
 // @namespace    http://tampermonkey.net/
-// @version      0.20
+// @version      0.26
 // @description  彈幕裝填機-全彈發射
 // @author       CB_Zhang
 // @match        https://ani.gamer.com.tw/animeVideo.php?sn*
@@ -18,8 +18,8 @@
 
     padding: 2%;
     margin-top: 5%;
-    margin-left: 5%;
-    margin-right: 5%;
+    margin-left: 2%;
+    margin-right: 4%;
     margin-bottom: 2%;
     font-size: 28px;
 
@@ -27,9 +27,9 @@
 
 }
 .danSize {
-    margin-left: 5%;
+    margin-left: 1%;
     margin-right: 1%;
-    width: 25%;
+    width: 27%;
     margin-bottom: 1%;
     display: inline-block;
 
@@ -48,25 +48,29 @@
 }
 .inputTime {
 
-    width: 15%;
-
+    width: 13%;
 
 }
 .inputTime_B {
 
-    width: 10%;
+    width: 7%;
+
+
+
+}
+.nowTime_B {
+
+    width: 8%;
+
 
 
 }
 .attackTime{
     margin-left: 5%;
-
-
-
-
 }
 .addB {
     width: 50%;
+
 }
 .attack {
     margin-top: 5%;
@@ -325,6 +329,12 @@
         timeB.setAttribute("id", tmp_time_B);
         timeB.setAttribute("class", "inputTime_B");
 
+        var timeNowB = document.createElement("button")
+        timeNowB.innerText = "Now"
+        var tmp_timeNow_B = "timeNowB_" + count
+        timeNowB.setAttribute("id", tmp_timeNow_B);
+        timeNowB.setAttribute("class", "nowTime_B");
+
         content4.appendChild(divInput)
         content4.appendChild(divSize)
         content4.appendChild(typeI)
@@ -333,6 +343,7 @@
         content4.appendChild(timeT)
         content4.appendChild(timeI)
         content4.appendChild(timeB)
+        content4.appendChild(timeNowB)
 
         array.push(1)
     }
@@ -383,11 +394,11 @@
         var classname = document.querySelectorAll(".colorP")
         for (var i = 0; i < classname.length; i++) {
 
-            console.log(classname[i])
+            
             classname[i].addEventListener('change', function() {
 
                 var vid = this.id;
-                console.log(vid)
+                
 
                 updateValue(vid);
             });
@@ -419,9 +430,28 @@
                 jumpTime(vid);
             });
         }
+         var classname2 = document.querySelectorAll(".nowTime_B")
+        for (var j = 0; j < classname2.length; j++) {
+            classname2[j].addEventListener('click', function() {
+
+                var vid = this.id;
+
+                setTime(vid);
+            });
+        }
+
         var go = document.getElementById("time_B");
          go.addEventListener('click', function() {
              jumpAttackTime();
+        });
+        var now = document.getElementById("timeNowS_B");
+        now.addEventListener('click', function() {
+
+        var video = document.getElementById("ani_video_html5_api");
+        var input = document.getElementById("attackTime");
+
+        input.value=parseInt(video.currentTime*10)
+
         });
 
     }
@@ -444,14 +474,14 @@
     function updateSize(e) {
 
         var ele = document.getElementById(e)
-        console.log(e)
+        
         var id = e.split('-');
         var size = ele.value + "px"
         id = id[0].split('_')
         var name = "dan_" + id[1]
         var text = document.getElementById(name);
         text.style.fontSize = size;
-        console.log(text)
+        
     }
 
     function jumpTime(e) {
@@ -464,8 +494,21 @@
         var video = document.getElementById("ani_video_html5_api");
         var time = document.getElementById("time_" + id[1]);
         video.currentTime = time.value / 10;
-        console.log(time.value)
+        
         video.play();
+
+
+    }
+    function setTime(e) {
+
+        var id = e.split('_');
+
+
+        var video = document.getElementById("ani_video_html5_api");
+        var input = document.getElementById("time_" + id[1]);
+
+        input.value=parseInt(video.currentTime*10)
+
 
 
     }
@@ -477,7 +520,7 @@
         var video = document.getElementById("ani_video_html5_api");
 
         video.currentTime = time.value / 10;
-        console.log(time.value)
+        
         video.play();
 
 
@@ -498,8 +541,7 @@
             var fontSize = parseFloat(style);
             var eleType = document.getElementById("typePackage_" + i)
             var type = parseInt(eleType.value)
-            console.log(eleType)
-            console.log(type)
+            
 
             var color = eleColor.value
             var time = parseInt(eleTime.value)
@@ -557,6 +599,12 @@
         timeB.setAttribute("id", "time_B");
         timeB.setAttribute("class", "inputTime_B_1");
 
+        var timeNowB = document.createElement("button")
+        timeNowB.innerText = "Now"
+
+        timeNowB.setAttribute("id", "timeNowS_B");
+        timeNowB.setAttribute("class", "nowTime_B");
+
 
         var attack = document.createElement("button")
         attack.innerText = "全彈發射!!"
@@ -568,6 +616,7 @@
         content5.appendChild(timeT)
         content5.appendChild(timeI)
         content5.appendChild(timeB)
+        content5.appendChild(timeNowB)
         content5.appendChild(attack)
 
     }
