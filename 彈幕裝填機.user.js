@@ -84,7 +84,7 @@
 
 `
     var array = []
-    var json = []
+   
 
     function addCss(dom_css) {
         let dom_html = document.getElementsByTagName("html");
@@ -532,6 +532,7 @@
     }
 
     function create() {
+        json = []
         for (var i = 0; i < array.length; i++) {
             var ele = document.getElementById("dan_" + i)
             var eleTime = document.getElementById("time_" + i)
